@@ -1,0 +1,63 @@
+<?php
+session_start();
+if (isset($_SESSION['login'])) {
+	if ($_SESSION['login'] != 1) {
+		header("location:http://localhost/sams1/index.php");
+
+	}
+
+} else {
+	header("location:http://localhost/sams1/index.php");
+}
+?>
+
+<?php include 'inc/header.php'?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Attendance Management System</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+	<div class="">
+			<a href="add.php" class="btn btn-success">Add Student</a>
+			<a href="view.php"class="btn btn-success" style="float: right;">View All</a>
+			<h2 class="text-center text-primary">Applicant Student</h2>
+		</div>
+	<table class="table table-striped">
+		<tr>
+			<th width="14%">SL</th>
+			<th width="14%">Name</th>
+			<th width="14%">Pic</th>
+			<th width="14%">Roll</th>
+			<th width="14%">Cell</th>
+			<th width="14%">Gender</th>
+			<th width="15%">Application letter</th>
+		</tr>
+<?php
+$conn = new mysqli('localhost', 'root', '', 'db_sams');
+$data = $conn->query("SELECT * FROM app_form");
+$i    = 1;
+if ($data->num_rows) {
+	while ($dd = $data->fetch_assoc()):?>
+				<tr>
+					<td><?php echo $i;
+	$i++;
+	?></td>
+					<td><?php echo $dd['name']?></td>
+					<td><img src="images/application/<?php echo $dd['pic']?>" style="width: 100px; height:50px;"></td>
+					<td><?php echo $dd['roll']?></td>
+					<td><?php echo $dd['cell']?></td>
+					<td><?php echo $dd['gender']?></td>
+					<td><a href="images/application/<?php echo $dd['application']?>" download class="btn btn-success">Download</a></td>
+				</tr>
+	<?php endwhile;}?>
+</table>
+</div>
+
+</body>
+</html>
+

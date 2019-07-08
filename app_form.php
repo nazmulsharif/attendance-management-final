@@ -1,0 +1,87 @@
+<?php
+	$conn = new mysqli('localhost','root','','db_sams');
+	if(isset($_POST['submit'])){
+		$name= $_POST['name'];
+		$roll= $_POST['roll'];
+		$cell= $_POST['cell'];
+		$gender= $_POST['gender'];
+		$pic = time().$_FILES['pic']['name'];
+		$picA = explode('.', $pic);
+		$picExt= end($picA);
+		$picName = md5($pic).".".$picExt;
+		$picTmp = $_FILES['pic']['tmp_name'];
+		$App = time().$_FILES['Application']['name'];
+		$AppA = explode('.', $App);
+		$AppExt= end($AppA);
+		$AppName = md5($pic).".".$AppExt;
+		$AppTmp = $_FILES['Application']['tmp_name'];
+		if(empty($name)||empty($roll)||empty($cell)||empty($gender)||empty($_FILES['pic']['size'])||empty($_FILES['Application']['size'])){
+			$alert = "Check all input field";
+		}
+		else
+		{
+			move_uploaded_file($picTmp, 'images/Application/'.$picName);
+			move_uploaded_file($AppTmp, 'images/Application/'.$AppName);
+			$conn-> query("INSERT INTO app_form(name,roll,cell,gender,pic,application)VALUES('$name','$roll','$cell','$gender','$picName','$AppName')");
+
+		}
+		
+	}
+
+?>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Student Attendance Management System</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="jquery.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	
+	<div class="container">
+		<div class="text-center header mt-5 bg-light mb-5">
+			<h2>Student Attendance Management System</h2>
+			<a href="home.php" class="btn btn-danger" style="float: right;"> Home </a>
+			<a href="stdViewAttendMark.php" class="btn btn-primary" style="float: right;"> Back </a>
+		</div>
+		<form action="" method="post" enctype="multipart/form-data" class="d-block w-50 m-auto">
+			<?php if(isset($alert)){echo "<h2 class='alert alert-danger'>".$alert."</h2>";} ?>
+			<div class="form-group">
+				<label for="">Full Name</label>
+				<input type="text" class="form-control" name="name">
+			</div>
+			<div class="form-group">
+				<label for="">Roll</label>
+				<input type="text" class="form-control" name="roll">
+			</div>
+			<div class="form-group">
+				<label for="">Mobile Number(Guardian)</label>
+				<input type="text" class="form-control" name="cell">
+			</div>
+			<div class="form-group">
+				<label for="">Gender</label>
+				<select name="gender" id="">
+					<option>---</option>
+					<option value='male'>Male</option>
+					<option value='female'>female</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">Image</label>
+				<input type="file" name="pic">
+			</div>
+			<div class="form-group">
+				<label for="">Application Letter</label>
+				<input type="file" name="Application">
+			</div>
+			<div class="form-group">
+				<input type="submit" name="submit" value="submit" class="btn btn-success">
+			</div>
+		</form>
+
+		
+	<?php include 'inc/footer.php'?>
+	</div>
+</body>
+</html>

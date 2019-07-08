@@ -1,0 +1,68 @@
+<?php 
+  session_start();
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/prettyPhoto.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+<?php
+  $conn = new mysqli("localhost","root","","db_sams"); 
+  if(!$conn){
+    echo ("Error Connection:".mysqli_connect_error());
+  }    
+  if(isset($_POST['submit1'])){
+    $log_email=$_POST['log_email'];
+    $log_pass = $_POST['log_pass'];
+    $sql = "SELECT * from admin WHERE email= '$log_email' AND pass = '$log_pass'";
+    $result = mysqli_query($conn,$sql);
+    $count = mysqli_num_rows($result);
+    if($count >0){
+      $_SESSION['login']=1;
+       header("location:http://localhost/sams1/home.php");
+     }
+     else if(empty($log_email)||empty($log_pass)){
+        echo "<h2 style='color:#fff; font-size:30px;text-align:center; background:red;'>Fail! Email or Password can not be empty,,Try Again.</h2>";
+        echo "<a href='index.php'style='text-decoration:none; font-size:25px;'><i class='fa fa-backward'></i>Back</a>";
+     }
+    else{
+       echo "<h2 style='color:red; font-size:30px; text-align:center; background:red; color:#fff'>Fail! Email or Password is incorrect,,Try Again</h2>";
+       echo "<a href='index.php'style='text-decoration:none; font-size:25px;'><i class='fa fa-backward'></i>Back</a>";
+     }
+     
+    }
+
+?>
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/jquery-1.11.3.min.js"></script>
+  <script src="js/jquery.prettyPhoto.js"></script>
+  <script src="js/wow.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
+  <script src="js/poppers.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
+
+  </body>
+</html>

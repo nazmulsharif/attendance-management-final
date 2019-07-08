@@ -1,0 +1,91 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.header{
+	background: #000;
+	padding: 10px 15px;
+}
+.header h2{
+	font-family: 'typo';
+	font-size: 30px;
+	color: #FFBB33;
+	width: 70%;
+	float: left;
+	font-weight: bold;
+
+}
+.header h3{
+	float: left;
+	width: 20%;
+	
+}
+.sign{
+	background:#FFBB33; 
+	color: #000;
+	width: 10%;
+	float: left;
+	font-size: 20px;
+	font-weight: bold;
+}
+.header:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+.content{
+	width: 100%;
+	height: 550px;
+	background: url('../images/bg2.jpg');
+	padding: 15px;
+}
+.reg{
+	width: 500px;
+	float: right;
+	background: #fff;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 60px;
+}
+.reg h2{
+	color: #000;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 5px solid #FFBB33;
+}
+.reg:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+.footer{
+	background-color: #000;
+
+}
+.menu{
+	width: 80%;
+	margin:auto;
+	text-align: center;
+}
+.menu ul {
+	list-style: none;
+}
+.menu ul li{
+	display: inline-block;
+	width: 300px;
+	padding: 10px 0;
+}
+.menu ul li a{
+	text-decoration: none;
+	color: #FFBB33;
+}
+.app_form{
+	margin: 50px auto;
+	width: 700px;
+}
+.search{
+	border: 2px solid black;
+	border-radius: 10px;
+	margin: 60px auto;
+	box-shadow: 0px 0px 10px black;
+}

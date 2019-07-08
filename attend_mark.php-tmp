@@ -1,0 +1,115 @@
+<?php
+session_start();
+if (isset($_SESSION['login'])) {
+	if ($_SESSION['login'] != 1) {
+		header("location:http://localhost/sams1/index.php");
+
+	}
+
+} else {
+	header("location:http://localhost/sams1/index.php");
+}
+
+?>
+
+<?php
+$conn = new mysqli('localhost', 'root', '', 'db_sams');
+$data = $conn->query("SELECT * FROM tbl_student");
+$sql  = $conn->query('SELECT * FROM tbl_attendance');
+$dt   = $sql->fetch_assoc();
+
+?>
+	<?php include 'inc/header.php'?>
+	<?php include 'lib/student.php'?>
+	<?php
+error_reporting(0);
+$stu       = new student();
+$curr_date = date('Y-m-d');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$attend       = $_POST['attend'];
+	$insertattend = $stu->insertAttendance($curr_date, $attend);
+}
+?>
+	<?php
+if (isset($insertattend)) {
+	echo $insertattend;
+}
+?>
+<!-- 	<div class='alert alert-danger' style=""><strong>Error!</strong>student Roll Missing</div> -->
+	<div class="text-center mt-2">
+			<h2 style="font-size: 20px;">Date:<?php echo $curr_date;
+?></h2>
+		</div>
+		<div class="">
+			<a href="add.php" class="btn btn-success">Add Student</a>
+			<a href="home.php" class="btn btn-secondary ml-2"style="float: right;">Home</a>
+			<a href="viewApp.php" class="btn btn-info"style="float: right;">Applicant Student</a>
+			<h2 class="text-center text-primary">Attendance Marks</h2>
+		</div>
+		<div class="mt-5">
+			<form action=""method="post">
+			<table class="table table-striped">
+				<tr>
+					<th width="16%">Serial</th>
+					<th width="16%">Roll</th>
+					<th width="16%">Attendance Percentage</th>
+					<th width="16%">Attendance Marks</th>
+					<th width="16%">Fine</th>
+					<th width="16%">comment</th>
+				</tr>
+<?php
+
+$r = $conn->query("select * from tbl_student");
+
+$nn = $r->num_rows;
+
+if ($nn > 0) {
+	$i = 1;
+	while ($arr = $r->fetch_assoc()) {
+		$q    = "select * from tbl_attendance where attend ='present' and roll = ".$arr['roll']."";
+		$r2   = $conn->query($q);
+		$numa = $r2->num_rows;
+
+		$q2      = "select * from tbl_attendance where roll = ".$arr['roll']."";
+		$check   = $conn->query($q2);
+		$classes = $check->num_rows;
+
+		$per            = $numa*100/$classes;
+		$attend_percent = $per."%";
+		$attend_mark    = 5*$per/100;
+		$fine           = 0;
+		$cmnt           = 'Good';
+		if ($per < 60) {
+			$fine = 1000+'tk';
+			$cmnt = 'Not so good';
+		}
+		if ($per < 40) {
+			$fine = 2000+'tk';
+			$cmnt = 'Bad';
+		}
+		if ($per == 0) {
+			$fine = 'no excuse';
+			$cmnt = 'Contact the Course Teacher';
+		}
+
+		?>
+						<tr>
+							<td><?php echo $i; $i++?></td>
+							<td><?php echo $aroll       = $arr['roll']?></td>
+							<td><?php echo $attend_per  = round($attend_percent, 2);?></td>
+							<td><?php echo $attend_mark = round($attend_mark, 2);?></td>
+							<td><?php echo $fine?></td>
+							<td><?php echo $cmnt?></td>
+		<?php
+		$dat = $conn->query("SELECT * FROM attend_mark where roll='$aroll'");
+		$conn->query("INSERT INTO attend_mark(roll,attend_per,attend_mark,fine,cmnt)VALUES('$aroll','$attend_per','$attend_mark','$fine','$cmnt')");
+
+		?></tr>
+		<?php }}
+
+?>
+</table>
+		</form>
+		</div>
+
+<?php include 'inc/footer.php'?>
